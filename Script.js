@@ -6,52 +6,51 @@ function getComputerChoice() {
     return compChoice;
 }
 
-let computerChoice = getComputerChoice();
-let userInput = prompt("Choose rock, paper or scissors: ").toLowerCase();
+let btn1 = document.querySelector("#btn1");
+let btn2 = document.querySelector("#btn2");
+let btn3 = document.querySelector("#btn3");
+let cpu = document.querySelector("#cpu");
+let user = document.querySelector("#user");
+let text = document.querySelector("#text");
+let userInput = "";
 
-function winner() {
-    if (computerChoice == "rock" && userInput == "rock") {
-        let text = "Tie! rock and rock."
-        return text
-    }
-    else if (computerChoice == "rock" && userInput == "paper") {
-        let text = "You won! paper beats rock."
-        return text
-    }
-    else if (computerChoice == "rock" && userInput == "scissors") {
-        let text = "You lost! rock beats scissors."
-        return text
-    }
-    else if (computerChoice == "paper" && userInput == "rock") {
-        let text = "You lost! paper beats rock."
-        return text
-    }
-    else if (computerChoice == "paper" && userInput == "paper") {
-        let text = "Tie! paper and paper."
-        return text
-    }
-    else if (computerChoice == "paper" && userInput == "scissors") {
-        let text = "You won! Scissors beats paper."
-        return text
-    }
-    else if (computerChoice == "scissors" && userInput == "rock") {
-        let text = "You won! Rock beats scissors."
-        return text
-    }
-    else if (computerChoice == "scissors" && userInput == "paper") {
-        let text = "You lost! Scissors beats paper."
-        return text
-    }
-    else if (computerChoice == "scissors" && userInput == "scissors") {
-        let text = "Tie! Scissors and scissors."
-        return text
-    }
-    else {
-        let text = "Invalid option!"
-        return text
-    }
-}       
+btn1.addEventListener("click", () => {
+    userInput = "rock";
+    playRound();
+})
+btn2.addEventListener("click", () => {
+    userInput = "paper";
+    playRound();
+})
+btn3.addEventListener("click", () => {
+    userInput = "scissors";
+    playRound();
+})
 
-let winnerText = winner();
+let userScore = 0;
+let compScore = 0;
 
-console.log(`Computer chose ${computerChoice} \n You chose ${userInput} \n ${winnerText}`);
+function playRound() {
+    let computerChoice = getComputerChoice();
+    function winner() {
+        if (computerChoice === userInput) {
+            return `Tie! ${userInput} and ${computerChoice}.`;
+        } else if (
+            (computerChoice === "rock" && userInput === "scissors") ||
+            (computerChoice === "paper" && userInput === "rock") ||
+            (computerChoice === "scissors" && userInput === "paper")
+        ) {
+            compScore++;
+            cpu.textContent = String(compScore)
+            return `You lost! ${computerChoice} beats ${userInput}.`;
+        } else {
+            userScore++;
+            user.textContent = String(userScore)
+            return `You won! ${userInput} beats ${computerChoice}.`;
+        }
+    }
+
+    let winnerText = winner();
+
+    text.innerHTML = (`Computer chose ${computerChoice} <br> You chose ${userInput}<br> \n${winnerText}`);
+}
